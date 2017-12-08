@@ -7,7 +7,7 @@
 #include <ctime>
 #include <unistd.h>
 using namespace std;
-
+// Segmentation fault (core dumped)
 int main(){
 
 	char c;
