@@ -1,8 +1,7 @@
 # Makefile for lab11
 
-fractals: invaders.cpp
-	g++ invaders.cpp gfxnew.o -lX11 -o invaders
+invaderstest: invaderstest.cpp
+	g++ invaderstest.cpp gfxnew.o -lX11 -o invaderstest
 
 clean:
-	rm invaders
-
+	rm invaderstest
