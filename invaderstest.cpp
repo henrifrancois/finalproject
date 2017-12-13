@@ -20,9 +20,10 @@ const int height = 850;
 int main(){
 
 	char c;
+	int event;
 	int margin = 30;
 	int x = width/2;
-	int y = height/2 - 2*margin;
+	int y = (7*height)/10;
 	int offset = 20;
 	int base = y - offset;
 	int dx = 0;
@@ -44,28 +45,34 @@ int main(){
 		gfx_flush();
 		usleep(5000);
 		//
-		if(gfx_event_waiting() > 0 || gfx_event_waiting() < 2){
+		event = gfx_event_waiting();
+		if(event){
 			c = gfx_wait();
-			if (c == 'Q'){
-				dx = -5;
-				x += dx;
+			if (event == 1){
+				if (c == 'Q'){
+					dx = -5;
+					x += dx;
+				}
+				else if (c == 'S'){
+					dx = 5;
+					x += dx;
+				}
+				else if (c == ' '){
+					usleep(3000);
+					shoot(x, base, ds);
+				}
+				else if (c == 's'){
+					life = life - 1;
+					usleep(2000000);
+					if(life == 2) gfx_color(0,0,255);
+					else if(life == 1) gfx_color(255,0,0);
+					else if(life == 0) return 0;
+				}
+				else{
+					continue;
+				}
 			}
-			else if (c == 'S'){
-				dx = 5;
-				x += dx;
-			}
-			else if (c == ' '){
-				usleep(3000);
-				shoot(x, base, ds);
-			}
-			else if (c == 's'){
-				life = life - 1;
-				usleep(2000000);
-				if(life == 2) gfx_color(0,0,255);
-				else if(life == 1) gfx_color(255,0,0);
-				else if(life == 0) return 0;
-			}
-			else{
+			else if (event == 2){
 				continue;
 			}
 		}
@@ -82,9 +89,9 @@ void shoot(int x, int y, int ds){
 	t = clock();
 	for (int i = 1; i < y/ds; i++){
 		gfx_clear();
-		usleep(8000);
+		// usleep(8000);
 		gfx_line( x, y - ds*i, x, y - ds*(i + 1) );
-		usleep(30000);
+		usleep(15000);
 		gfx_flush();
 	}
 	t = clock() - t;
