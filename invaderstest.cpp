@@ -35,7 +35,7 @@ int main(){
 		// all event updates happen in this part of the loop
 		gfx_clear();
 		gfx_circle(x + dx, y, offset);
-		gfx_rectangle(x, height/2, 50, 70);w
+		gfx_rectangle(x, height/2, 50, 70);
 		gfx_flush();
 		usleep(1000);
 		//
