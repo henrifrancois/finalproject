@@ -4,17 +4,16 @@
 
 
 
-class Invader{
+class Invaders{
 	public:
-		Invader();
-		~Invader();
+		Invaders();
+		~Invaders();
 		void shoot();
-		void increaseSpeed();
-		void draw();
-		bool hasHit();
 		bool isHit();
+		void move(int, int);
 	private:
 		int x, y;
-		int rad1, rad2;
-		int dx, dy;
+		int rad1 = 25;
+		int rad2 = 30;
+		int dx = 1;
 };
