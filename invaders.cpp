@@ -31,3 +31,4 @@ void Invaders::shoot(){
 bool isHit(){
 return true;
 }
+  
