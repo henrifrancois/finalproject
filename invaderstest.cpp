@@ -14,7 +14,7 @@
 using namespace std;
 // Segmentation fault (core dumped)
 
-XRectangle shoot( int, int, int, XRectangle &, vector<XRectangle> &);
+void shoot( int, int, int, XRectangle &, vector<XRectangle> &);
 bool isHit(XRectangle, XRectangle);
 void draw_rectangle(XRectangle);
 
@@ -36,11 +36,10 @@ int main(){
 	int ds = 10;
 	int life = 3;
 
-  XRectangle laser = {x, base, 2, 8};
 
 	XRectangle rect = {width/2, height/2, 100, 50};
 	XRectangle rect2 = {width/4, height/2, 100, 50};
-	XRectangle rect3 = {width, height/2, 100, 50};
+	XRectangle rect3 = {width - 100, height/2, 100, 50};
 	vector<XRectangle> invaders = {rect, rect2, rect3};
 
 
@@ -72,6 +71,7 @@ int main(){
 				}
 				else if (c == ' '){
 					usleep(3000);
+					XRectangle laser = {x, base, 2, 8};
 					shoot(x, base, ds, laser, invaders);
 				}
 				else if (c == 's'){
@@ -96,7 +96,7 @@ int main(){
 }
 
 
-void shoot( int a,  int b, int ds, XRectangle laser, vector<XRectangle> &aliens){
+void shoot( int a,  int b, int ds, XRectangle &laser, vector<XRectangle> &aliens){
 	clock_t t;
 	t = clock();
 	for (int i = 1; i < b/ds; i++){
@@ -105,14 +105,14 @@ void shoot( int a,  int b, int ds, XRectangle laser, vector<XRectangle> &aliens)
 		draw_rectangle(laser);
 		laser.x = a;
 		laser.y -= ds*i;
-		for (int it = 0; it <= aliens.size(); ++it){
+		for (int it = 0; it < aliens.size(); ++it){
 			auto st = aliens.begin();
-			if (isHit(laser, aliens[it]) ){
+			if ( isHit(aliens[it], laser) ){
 				aliens.erase(st+it);
 				break;
 			}
 		}
-		usleep(15000);
+		usleep(5000);
 		gfx_flush();
 	}
 	t = clock() - t;
@@ -123,6 +123,8 @@ void shoot( int a,  int b, int ds, XRectangle laser, vector<XRectangle> &aliens)
 
 	return;
 }
+
+// void shootBack()
 
 // bool isHit(Invader X, XSegment P){
 // 	bool hit = false;
