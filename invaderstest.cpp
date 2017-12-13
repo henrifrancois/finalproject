@@ -3,9 +3,12 @@
 // December 8th, 2017
 
 #include <iostream>
-#include "gfxnew.h"
 #include <ctime>
 #include <unistd.h>
+#include <cmath>
+
+#include "gfxnew.h"
+
 using namespace std;
 // Segmentation fault (core dumped)
 
@@ -19,15 +22,17 @@ int main(){
 	char c;
 	int margin = 30;
 	int x = width/2;
-	int y = height - 2*margin;
+	int y = height/2 - 2*margin;
 	int offset = 20;
 	int base = y - offset;
 	int dx = 0;
 
 	int dy = 0;
-	int ds = 5;
+	int ds = 30;
 	int life = 3;
-	gfx_open(500,500,"Final Project");
+
+
+	gfx_open(width,height,"Final Project");
 	gfx_color(255,255,255);
 
 	while (c != 'q'){
@@ -35,11 +40,11 @@ int main(){
 		// all event updates happen in this part of the loop
 		gfx_clear();
 		gfx_circle(x + dx, y, offset);
-		gfx_rectangle(x, height/2, 50, 70);
+		// gfx_rectangle(x, height/2, 50, 70);
 		gfx_flush();
-		usleep(1000);
+		usleep(5000);
 		//
-		if(gfx_event_waiting()){
+		if(gfx_event_waiting() > 0 || gfx_event_waiting() < 2){
 			c = gfx_wait();
 			if (c == 'Q'){
 				dx = -5;
@@ -50,35 +55,41 @@ int main(){
 				x += dx;
 			}
 			else if (c == ' '){
-				ds += 5;
+				usleep(3000);
 				shoot(x, base, ds);
-			}
-			else{
-				continue;
 			}
 			else if (c == 's'){
 				life = life - 1;
-				usleep(200000);
+				usleep(2000000);
 				if(life == 2) gfx_color(0,0,255);
 				else if(life == 1) gfx_color(255,0,0);
 				else if(life == 0) return 0;
 			}
+			else{
+				continue;
+			}
 		}
-		else if(gfx_event_waiting() == 0 || gfx_event_waiting() == 2){
-			dx = 0;
-			ds = 0;
+		else{
+				dx = 0;
 		}
 	}
+	return 0;
 }
 
 
 void shoot(int x, int y, int ds){
-
-	for (int i = 0; i < y/ds; i++){
-		// gfx_clear();
+	clock_t t;
+	t = clock();
+	for (int i = 1; i < y/ds; i++){
+		gfx_clear();
+		usleep(8000);
 		gfx_line( x, y - ds*i, x, y - ds*(i + 1) );
-		// gfx_flush();
-		// usleep(10000);
+		usleep(30000);
+		gfx_flush();
 	}
+	t = clock() - t;
+	float dt = (float)t / CLOCKS_PER_SEC;
+
+	if (dt < 1) usleep(pow(10.0, 3.0) - dt);
 
 }
