@@ -13,5 +13,6 @@ $(CLASS).o: $(CLASS).h $(CLASS).cpp
 	$(CMP) -c $(CLASS).cpp -std=c++11 -o $(CLASS).o
 
 clean:
+	rm *.o
 	rm $(EXEC)
 

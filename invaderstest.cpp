@@ -7,10 +7,9 @@
 #include <unistd.h>
 #include <cmath>
 
-#include "gfxnew.h"
-
 using namespace std;
-// Segmentation fault (core dumped)
+#include "invaders.h"
+#include "gfxnew.h"
 
 void shoot(int, int, int);
 
@@ -27,11 +26,12 @@ int main(){
 	int offset = 20;
 	int base = y - offset;
 	int dx = 0;
-
+	int x2 = 100;
+	int y2 = 100;
 	int dy = 0;
 	int ds = 30;
 	int life = 3;
-
+	Invaders alien;
 
 	gfx_open(width,height,"Final Project");
 	gfx_color(255,255,255);
@@ -44,7 +44,8 @@ int main(){
 		// gfx_rectangle(x, height/2, 50, 70);
 		gfx_flush();
 		usleep(5000);
-		//
+
+		alien.move(x2,y2);
 		event = gfx_event_waiting();
 		if(event){
 			c = gfx_wait();
