@@ -1,4 +1,4 @@
-// Zachary Spitzer
+// Zachary Spitzer and Henri Francois
 // Final Project Code
 // December 8th, 2017
 
@@ -11,27 +11,34 @@ using namespace std;
 
 void shoot(int, int, int);
 
+const int width = 500;
+const int height = 850;
+
 int main(){
 
 	char c;
-	int x = 250;
-	int y = 250;
-	int base = y - 20;
+	int margin = 30;
+	int x = width/2;
+	int y = height - 2*margin;
+	int offset = 20;
+	int base = y - offset;
 	int dx = 0;
-	int dy = 0;
-	int ds = 5;
-	gfx_open(500,500,"Final Project");
+	int ds = 0;
+
+	//
+	gfx_open(width,height,"Final Project");
 	gfx_color(255,0,0);
+
+	//
 	while (c != 'q'){
+
+		// all event updates happen in this part of the loop
 		gfx_clear();
-		gfx_circle(x + dx, y + dy, 20);
-		if (c == ' '){
-			shoot(x, base, ds);
-			base -= ds;
-			usleep(3000);
-		}
+		gfx_circle(x + dx, y, offset);
+		gfx_rectangle(x, height/2, 50, 70);
 		gfx_flush();
-		usleep(2000);
+		usleep(1000);
+		//
 		if(gfx_event_waiting()){
 			c = gfx_wait();
 			if (c == 'Q'){
@@ -42,27 +49,27 @@ int main(){
 				dx = 5;
 				x += dx;
 			}
-			else if (c == 'R'){
-				dy = -5;
-				y += dy;
-			}
-			else if (c == 'T'){
-				dy = 5;
-				y += dy;
-			}
 			else if (c == ' '){
-				base = y - 20;
+				ds += 5;
+				shoot(x, base, ds);
+			}
+			else{
+				continue;
 			}
 		}
 		else if(gfx_event_waiting() == 0 || gfx_event_waiting() == 2){
 			dx = 0;
-			dy = 0;
-			// ds = 0;
+			ds = 0;
 		}
 	}
 }
 
 
 void shoot(int x, int y, int ds){
-	gfx_line(x, y, x, y - ds);
+	for (int i = 0; i < y/ds; i++){
+		// gfx_clear();
+		gfx_line( x, y - ds*i, x, y - ds*(i + 1) );
+		// gfx_flush();
+		// usleep(10000);
+	}
 }
