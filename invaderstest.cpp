@@ -20,8 +20,9 @@ int main(){
 	int dx = 0;
 	int dy = 0;
 	int ds = 5;
+	int life = 3;
 	gfx_open(500,500,"Final Project");
-	gfx_color(255,0,0);
+	gfx_color(255,255,255);
 	while (c != 'q'){
 		gfx_clear();
 		gfx_circle(x + dx, y + dy, 20);
@@ -52,6 +53,13 @@ int main(){
 			}
 			else if (c == ' '){
 				base = y - 20;
+			}
+			else if (c == 's'){
+				life = life - 1;
+				usleep(200000);
+				if(life == 2) gfx_color(0,0,255);
+				else if(life == 1) gfx_color(255,0,0);
+				else if(life == 0) return 0;
 			}
 		}
 		else if(gfx_event_waiting() == 0 || gfx_event_waiting() == 2){
